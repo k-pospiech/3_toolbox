@@ -1,6 +1,13 @@
 import numpy as np
 from sympy import symbols, Matrix
 
+# Matrix libraries
+def matrix_libraries():
+    global np, Matrix, symbols
+    import numpy as np
+    from sympy import symbols, Matrix
+    print("All necessary libraries for matrix_calculator have been imported.")
+
 # Matrix definition
 def create_matrix(rows, cols, symbolic=False, default_value=0):
     """
@@ -45,7 +52,7 @@ def matrix_shape(matrix):
     """
     return matrix.shape
 
-# Error Handling
+# Properties and error handling
 def addition_compatibility(A, B):
     """
     Ensure two matrices are conformable for addition.
@@ -117,6 +124,117 @@ def print_matrix(matrix):
             print(row_str)
     else:
         print(matrix)
+
+# Addition
+def matrix_add(A, B):
+    """
+    Add two matrices.
+    
+    Parameters:
+    - A, B (Matrix or np.ndarray): Matrices to be added.
+    
+    Returns:
+    - Matrix or np.ndarray: Resultant matrix after addition.
+    """
+    from matrix_calculator import addition_compatibility
+    addition_compatibility(A, B)
+    if isinstance(A, Matrix):
+        return A + B
+    else:
+        return np.add(A, B)
+     
+# Subtraction
+def matrix_subract(A, B):
+    """
+    Subtract matrix B from matrix A.
+    
+    Parameters:
+    - A, B (Matrix or np.ndarray): Matrices involved in subtraction.
+    
+    Returns:
+    - Matrix or np.ndarray: Resultant matrix after subtraction.
+    """
+    from matrix_calculator import addition_compatibility
+    addition_compatibility(A, B)
+    if isinstance(A, Matrix):
+        return A - B
+    else:
+        return np.subtract(A, B)
+    
+# Multiplication
+def matrix_multiply(A, B):
+    """
+    Multiply two matrices.
+    
+    Parameters:
+    - A, B (Matrix or np.ndarray): Matrices to be multiplied.
+    
+    Returns:
+    - Matrix or np.ndarray: Resultant matrix after multiplication.
+    """
+    from matrix_calculator import multiplication_compatibility
+    multiplication_compatibility(A, B)
+    if isinstance(A, Matrix):
+        return A * B
+    else:
+        return np.dot(A, B)
+    
+# Transposition
+def matrix_transpose(matrix):
+    """
+    Transpose a matrix.
+    
+    Parameters:
+    - matrix (Matrix or np.ndarray): Matrix to be transposed.
+    
+    Returns:
+    - Matrix or np.ndarray: Transposed matrix.
+    """
+    if isinstance(matrix, Matrix):
+        return matrix.transpose()
+    else:
+        return np.transpose(matrix)
+    
+# Determinant
+def matrix_determinant(matrix):
+    """
+    Calculate the determinant of a matrix.
+    
+    Parameters:
+    - matrix (Matrix or np.ndarray): Matrix for which determinant is to be calculated.
+    
+    Returns:
+    - number (float or Symbol): Determinant of the matrix.
+    """
+    from matrix_calculator import check_square
+    check_square(matrix)
+    if isinstance(matrix, Matrix):
+        return matrix.det()
+    else:
+        return np.linalg.det(matrix)
+    
+# Inversion
+def matrix_inverse(matrix):
+    """
+    Calculate the inverse of a matrix.
+    
+    Parameters:
+    - matrix (Matrix or np.ndarray): Matrix to be inverted.
+    
+    Returns:
+    - Matrix or np.ndarray: Inverse of the matrix.
+    """
+    from matrix_calculator import check_square
+    check_square(matrix)
+    if isinstance(matrix, Matrix):
+        if matrix.det() == 0:
+            raise ValueError("Matrix is singular and cannot be inverted.")
+        return matrix.inv()
+    else:
+        if np.linalg.det(matrix) == 0:
+            raise ValueError("Matrix is singular and cannot be inverted.")
+        return np.linalg.inv(matrix)
+    
 
 # # Example usage
 # A = create_matrix(2, 3)
