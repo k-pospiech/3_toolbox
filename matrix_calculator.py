@@ -100,6 +100,7 @@ def check_square(matrix):
     Returns:
     - bool: True if the matrix is square, otherwise an exception is raised.
     """
+    from matrix_calculator import is_square
     if not is_square(matrix):
         raise ValueError('The matrix is not square')
     return True
@@ -235,12 +236,132 @@ def matrix_inverse(matrix):
             raise ValueError("Matrix is singular and cannot be inverted.")
         return np.linalg.inv(matrix)
     
+# Eigenvalues and eigenvectors
+def matrix_eigen(matrix):
+    """
+    Compute the eigenvalues and eigenvectors of a matrix.
+    
+    Parameters:
+    - matrix (Matrix or np.ndarray): Matrix for which eigenvalues and eigenvectors are to be computed.
+    
+    Returns:
+    - tuple: Eigenvalues and eigenvectors.
+    """
+    from matrix_calculator import check_square
+    check_square(matrix)
+    if isinstance(matrix, Matrix):
+        return matrix.eigenvals(), matrix.eigenvects()
+    else:
+        return np.linalg.eig(matrix)
+    
+# LU decomposition
+def matrix_lu_decomposition(matrix):
+    """
+    Perform LU decomposition on a matrix.
+    
+    Parameters:
+    - matrix (Matrix or np.ndarray): Matrix to be decomposed.
+    
+    Returns:
+    - tuple: Lower triangular matrix (L) and upper triangular matrix (U).
+    """
+    if isinstance(matrix, Matrix):
+        L, U, _ = matrix.LUdecomposition()
+        return L, U
+    else:
+        import scipy.linalg
+        P, L, U = scipy.linalg.lu(matrix)
+        return L, U
+    
+# Cholesky decomposition
+def matrix_cholesky_decomposition(matrix):
+    """
+    Perform Cholesky decomposition on a matrix.
+    
+    Parameters:
+    - matrix (Matrix or np.ndarray): Matrix to be decomposed.
+    
+    Returns:
+    - np.ndarray or Matrix: Lower triangular matrix.
+    """
+    from matrix_calculator import check_square
+    check_square(matrix)
+    if isinstance(matrix, Matrix):
+        return matrix.cholesky()
+    else:
+        return np.linalg.cholesky(matrix)
+    
+# QR decomposition
+def matrix_qr_decomposition(matrix):
+    """
+    Perform QR decomposition on a matrix.
+    
+    Parameters:
+    - matrix (Matrix or np.ndarray): Matrix to be decomposed.
+    
+    Returns:
+    - tuple: Orthogonal matrix (Q) and upper triangular matrix (R).
+    """
+    if isinstance(matrix, Matrix):
+        Q, R = matrix.QRdecomposition()
+        return Q, R
+    else: 
+        return np.linalg.qr(matrix)
+    
+# Singular Value Decomposition (SVD)
+def matrix_svd(matrix):
+    """
+    Perform Singular Value Decomposition on a matrix.
+    
+    Parameters:
+    - matrix (Matrix or np.ndarray): Matrix to be decomposed.
+    
+    Returns:
+    - tuple: U, Sigma (Σ), and V* matrices.
+    """
+    if isinstance(matrix, Matrix):
+        U, S, V = matrix.singular_value_decomposition()
+        return U, S, V
+    else:
+        return np.linalg.svd(matrix)
 
-# # Example usage
-# A = create_matrix(2, 3)
-# B = create_matrix(3, 2)
-# C = create_matrix(2, 3, symbolic=True)
+# Example usage
+from sympy import Matrix, symbols
+import numpy as np
 
-# print_matrix(A)
-# print_matrix(B)
-# print_matrix(C)
+# Only the numerical matrix
+numerical_matrix = np.array([[4, 12], [12, 37]])
+
+# Eigenvalues and Eigenvectors
+eigen_numerical = matrix_eigen(numerical_matrix)
+print("Eigenvalues and Eigenvectors (Numerical):")
+print("Eigenvalues:\n", eigen_numerical.eigenvalues)
+print("Eigenvectors:\n", eigen_numerical.eigenvectors)
+print("-"*50)
+
+# LU Decomposition
+lu_numerical = matrix_lu_decomposition(numerical_matrix)
+print("LU Decomposition (Numerical):")
+print("L:\n", lu_numerical[0])
+print("U:\n", lu_numerical[1])
+print("-"*50)
+
+# Cholesky Decomposition
+cholesky_numerical = matrix_cholesky_decomposition(numerical_matrix)
+print("Cholesky Decomposition (Numerical):")
+print(cholesky_numerical)
+print("-"*50)
+
+# QR Decomposition
+qr_numerical = matrix_qr_decomposition(numerical_matrix)
+print("QR Decomposition (Numerical):")
+print("Q:\n", qr_numerical.Q)
+print("R:\n", qr_numerical.R)
+print("-"*50)
+
+# SVD Decomposition
+svd_numerical = matrix_svd(numerical_matrix)
+print("SVD Decomposition (Numerical):")
+print("U:\n", svd_numerical.U)
+print("S:\n", svd_numerical.S)
+print("Vh:\n", svd_numerical.Vh)
