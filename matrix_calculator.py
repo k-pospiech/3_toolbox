@@ -6,6 +6,7 @@ def matrix_libraries():
     global np, Matrix, symbols
     import numpy as np
     from sympy import symbols, Matrix
+    from scipy.linalg import expm
     print("All necessary libraries for matrix_calculator have been imported.")
 
 # Matrix definition
@@ -325,43 +326,76 @@ def matrix_svd(matrix):
     else:
         return np.linalg.svd(matrix)
 
-# Example usage
-from sympy import Matrix, symbols
-import numpy as np
+# Determinant
+def matrix_determinant(matrix):
+    """
+    Compute the determinant of a given matrix.
+    
+    Parameters:
+    - matrix (numpy.ndarray or sympy.Matrix): The input matrix.
+    
+    Returns:
+    - float or sympy.Expr: The determinant of the matrix.
+    """
+    if isinstance(matrix, np.ndarray):
+        return np.linalg.det(matrix)
+    else:
+        return matrix.det()
+    
+# Trace
+def matrix_trace(matrix):
+    """
+    Compute the trace of a given matrix.
+    
+    Parameters:
+    - matrix (numpy.ndarray or sympy.Matrix): The input matrix.
+    
+    Returns:
+    - float or sympy.Expr: The trace of the matrix.
+    """
+    if isinstance(matrix, np.ndarray):
+        return np.trace(matrix)
+    else:
+        return matrix.trace()
+    
+# Inverse
+def matrix_inverse(matrix):
+    """
+    Compute the inverse of a given matrix if it exists.
+    
+    Parameters:
+    - matrix (numpy.ndarray or sympy.Matrix): The input matrix.
+    
+    Returns:
+    - numpy.ndarray or sympy.Matrix: The inverse of the matrix.
+    """
+    if isinstance(matrix, np.ndarray):
+        return np.linalg.inv(matrix)
+    else:
+        return matrix.inv()
+    
+# Pseudoinverse
+def matrix_pseudoinverse(matrix):
+    """
+    Compute the Moore-Penrose pseudoinverse of a given matrix.
+    
+    Parameters:
+    - matrix (numpy.ndarray): The input matrix.
+    
+    Returns:
+    - numpy.ndarray: The pseudoinverse of the matrix.
+    """
+    return np.linalg.pinv(matrix)
 
-# Only the numerical matrix
-numerical_matrix = np.array([[4, 12], [12, 37]])
-
-# Eigenvalues and Eigenvectors
-eigen_numerical = matrix_eigen(numerical_matrix)
-print("Eigenvalues and Eigenvectors (Numerical):")
-print("Eigenvalues:\n", eigen_numerical.eigenvalues)
-print("Eigenvectors:\n", eigen_numerical.eigenvectors)
-print("-"*50)
-
-# LU Decomposition
-lu_numerical = matrix_lu_decomposition(numerical_matrix)
-print("LU Decomposition (Numerical):")
-print("L:\n", lu_numerical[0])
-print("U:\n", lu_numerical[1])
-print("-"*50)
-
-# Cholesky Decomposition
-cholesky_numerical = matrix_cholesky_decomposition(numerical_matrix)
-print("Cholesky Decomposition (Numerical):")
-print(cholesky_numerical)
-print("-"*50)
-
-# QR Decomposition
-qr_numerical = matrix_qr_decomposition(numerical_matrix)
-print("QR Decomposition (Numerical):")
-print("Q:\n", qr_numerical.Q)
-print("R:\n", qr_numerical.R)
-print("-"*50)
-
-# SVD Decomposition
-svd_numerical = matrix_svd(numerical_matrix)
-print("SVD Decomposition (Numerical):")
-print("U:\n", svd_numerical.U)
-print("S:\n", svd_numerical.S)
-print("Vh:\n", svd_numerical.Vh)
+# Exponential
+def matrix_exponential(matrix):
+    """
+    Compute the matrix exponential of a given matrix.
+    
+    Parameters:
+    - matrix (numpy.ndarray): The input matrix.
+    
+    Returns:
+    - numpy.ndarray: The matrix exponential.
+    """
+    return expm(matrix)
