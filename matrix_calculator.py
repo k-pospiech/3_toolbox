@@ -1,13 +1,8 @@
 import numpy as np
 from sympy import symbols, Matrix
-
-# Matrix libraries
-def matrix_libraries():
-    global np, Matrix, symbols
-    import numpy as np
-    from sympy import symbols, Matrix
-    from scipy.linalg import expm
-    print("All necessary libraries for matrix_calculator have been imported.")
+from scipy.linalg import expm
+from numpy.linalg import matrix_rank
+from numpy.linalg import cond
 
 # Matrix definition
 def create_matrix(rows, cols, symbolic=False, default_value=0):
@@ -399,3 +394,27 @@ def matrix_exponential(matrix):
     - numpy.ndarray: The matrix exponential.
     """
     return expm(matrix)
+
+# Rank
+def compute_rank(matrix):
+    """Compute the rank of a matrix.
+    
+    Args:
+    - matrix (Matrix): Input matrix (either symbolic or numerical).
+    
+    Returns:
+    - int: Rank of the matrix.
+    """
+    return matrix_rank(matrix)
+
+# Condition number
+def compute_condition_number(matrix):
+    """Compute the condition number of a matrix.
+    
+    Args:
+    - matrix (Matrix): Input matrix (either symbolic or numerical).
+    
+    Returns:
+    - float: Condition number of the matrix.
+    """
+    return cond(matrix)
