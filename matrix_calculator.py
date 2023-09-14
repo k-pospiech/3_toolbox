@@ -418,3 +418,38 @@ def compute_condition_number(matrix):
     - float: Condition number of the matrix.
     """
     return cond(matrix)
+
+# Norms
+def compute_norm(matrix, norm_type="fro"):
+    """
+    Compute the norm of a matrix.
+    
+    Args:
+    - matrix (ndarray): The input matrix.
+    - norm_type (str): The type of norm to compute. Supported values are 'fro', 'l1', and 'linf'.
+    
+    Returns:
+    - float: The computed matrix norm.
+    """
+    if norm_type == "fro":
+        return np.linalg.norm(matrix,"fro")
+    elif norm_type == "l1":
+        return np.linalg.norm(matrix, 1)
+    elif norm_type == "linf":
+        return np.linalg.norm(matrix, np.inf)
+    else:
+        raise ValueError("Unsupported norm type. Use 'fro', 'l1' or 'linf'.")
+    
+# Kronecker product
+def kronecker_product(matrix1, matrix2):
+    """
+    Compute the Kronecker product of two matrices.
+    
+    Args:
+    - matrix1 (ndarray): The first input matrix.
+    - matrix2 (ndarray): The second input matrix.
+    
+    Returns:
+    - ndarray: The computed Kronecker product.
+    """
+    return np.kron(matrix1, matrix2)
