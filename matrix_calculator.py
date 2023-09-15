@@ -1,6 +1,7 @@
 import numpy as np
 from sympy import symbols, Matrix
 from scipy.linalg import expm
+from scipy.linalg import logm, expm
 from numpy.linalg import matrix_rank
 from numpy.linalg import cond
 
@@ -453,3 +454,45 @@ def kronecker_product(matrix1, matrix2):
     - ndarray: The computed Kronecker product.
     """
     return np.kron(matrix1, matrix2)
+
+def matrix_power(matrix, exponent):
+    """
+    Raise a matrix to a given power.
+    
+    Args:
+    - matrix (ndarray or Matrix): The input matrix.
+    - exponent (float): The exponent to which the matrix is to be raised.
+    
+    Returns:
+    - ndarray or Matrix: The matrix raised to the given power.
+    
+    Raises:
+    - ValueError: If the matrix is not square.
+    """
+    if not is_square(matrix):
+        raise ValueError("The matrix must be square for matrix powers.")
+    
+    if int(exponent) == exponent:
+        return np.linalg.matrix_power(matrix, int(exponent))
+    else:
+        return expm(exponent * logm(matrix))    # for non-int powers, use A^r = exp(r*log(A))
+    
+def matrix_logarithm(matrix):
+    """
+    Compute the logarithm of a matrix.
+    
+    Args:
+    - matrix (ndarray or Matrix): The input matrix.
+    
+    Returns:
+    - ndarray or Matrix: The matrix logarithm.
+    
+    Raises:
+    - ValueError: If the matrix is not square or if it's singular.
+    """
+    if not is_square(matrix):
+        raise ValueError("The matrix must be square for matrix logarithm.")
+    if np.linalg.det(matrix) == 0:
+        raise ValueError("Logarithm is undefined for singular matrices.")
+    
+    return logm(matrix)
