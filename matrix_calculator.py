@@ -455,6 +455,7 @@ def kronecker_product(matrix1, matrix2):
     """
     return np.kron(matrix1, matrix2)
 
+# Matrix power
 def matrix_power(matrix, exponent):
     """
     Raise a matrix to a given power.
@@ -476,7 +477,8 @@ def matrix_power(matrix, exponent):
         return np.linalg.matrix_power(matrix, int(exponent))
     else:
         return expm(exponent * logm(matrix))    # for non-int powers, use A^r = exp(r*log(A))
-    
+
+# Matrix logarithm    
 def matrix_logarithm(matrix):
     """
     Compute the logarithm of a matrix.
@@ -496,3 +498,38 @@ def matrix_logarithm(matrix):
         raise ValueError("Logarithm is undefined for singular matrices.")
     
     return logm(matrix)
+
+# Linear equations
+def solve_linear_system(matrix, b):
+    """
+    Solve a system of linear equations Ax = b.
+    
+    Args:
+    - matrix (ndarray or Matrix): Coefficient matrix A.
+    - b (ndarray or list): Right-hand side vector.
+    
+    Returns:
+    - ndarray: Solution vector x.
+    
+    Raises:
+    - ValueError: If the matrix is singular.
+    """
+    if np.linalg.det(matrix) == 0:
+        raise ValueError("Matrix is singular and cannot be inverted.")
+    
+    return np.linalg.inv(matrix).dot(b)
+
+# Differential equations
+def solve_matrix_differential(A, x0, t):
+    """
+    Solve a system of linear differential equations using matrices.
+    
+    Args:
+    - A (ndarray): Coefficient matrix A.
+    - x0 (ndarray or list): Initial conditions vector.
+    - t (float): Time at which the solution is desired.
+    
+    Returns:
+    - ndarray: Solution vector x(t).
+    """
+    return expm(A * t).dot(x0)
