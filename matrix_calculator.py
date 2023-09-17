@@ -4,6 +4,7 @@ from scipy.linalg import expm
 from scipy.linalg import logm, expm
 from numpy.linalg import matrix_rank
 from numpy.linalg import cond
+from scipy.sparse import csr_matrix
 
 # Matrix definition
 def create_matrix(rows, cols, symbolic=False, default_value=0):
@@ -533,3 +534,60 @@ def solve_matrix_differential(A, x0, t):
     - ndarray: Solution vector x(t).
     """
     return expm(A * t).dot(x0)
+
+# Create Sparse Matrices
+def create_sparse(matrix):
+    """
+    Convert a dense matrix to a compressed sparse row (CSR) matrix.
+
+    Args:
+    - matrix (2D list/2D numpy array): Input dense matrix.
+
+    Returns:
+    - csr_matrix: Compressed Sparse Row representation of the matrix.
+    """
+    return csr_matrix(matrix)
+
+# Convert Sparse to Dense
+def sparse_to_dense(sparse_matrix):
+    """
+    Convert a sparse matrix to its dense representation.
+
+    Args:
+    - sparse_matrix (csr_matrix): Input sparse matrix.
+
+    Returns:
+    - numpy.ndarray: Dense representation of the matrix.
+    """
+    return sparse_matrix.toarray()
+
+# Check if sparse
+def check_sparsity(matrix):
+    """
+    Check the sparsity of a matrix.
+
+    Args:
+    - matrix (2D list/2D numpy array/csr_matrix): Input matrix.
+
+    Returns:
+    - float: Percentage of non-zero entries in the matrix.
+    """
+    if not isinstance(matrix, csr_matrix):
+        matrix = csr_matrix(matrix)
+    total_elements = matrix.shape[0] * matrix.shape[1]
+    non_zero_elements = matrix.nnz
+    sparsity = (total_elements - non_zero_elements) / total_elements * 100
+    return sparsity
+
+#Get non-zero elements and their locations
+def get_non_zero(sparse_matrix):
+    """
+    Get the non-zero elements and their row, column locations from a sparse matrix.
+
+    Args:
+    - sparse_matrix (csr_matrix): Input sparse matrix.
+
+    Returns:
+    - tuple: (data, (row_indices, col_indices))
+    """
+    return sparse_matrix.data, sparse_matrix.nonzero()
