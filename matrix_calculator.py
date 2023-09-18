@@ -579,7 +579,7 @@ def check_sparsity(matrix):
     sparsity = (total_elements - non_zero_elements) / total_elements * 100
     return sparsity
 
-#Get non-zero elements and their locations
+# Get non-zero elements and their locations
 def get_non_zero(sparse_matrix):
     """
     Get the non-zero elements and their row, column locations from a sparse matrix.
@@ -591,3 +591,49 @@ def get_non_zero(sparse_matrix):
     - tuple: (data, (row_indices, col_indices))
     """
     return sparse_matrix.data, sparse_matrix.nonzero()
+
+# Finite Difference Method
+def fdm_1d_second_order(n, h=1.0):
+    """
+    Generate a 1D finite difference matrix for second-order central difference.
+
+    Args:
+    - n (int): Number of grid points.
+    - h (float): Grid spacing.
+
+    Returns:
+    - numpy.ndarray: Finite difference matrix.
+    """
+    diagonals = [-2*np.ones(n), np.ones(n-1), np.ones(n-1)]
+    return np.diag(diagonals[0]) + np.diag(diagonals[1], k=1) + np.diag(diagonals[1], k=-1) / h**2
+
+# Finite Element Method
+def fem_1d_linear_stiffness(n, h=1.0):
+    """
+    Generate a 1D finite element stiffness matrix using linear elements.
+
+    Args:
+    - n (int): Number of nodes.
+    - h (float): Element length.
+
+    Returns:
+    - numpy.ndarray: Stiffness matrix.
+    """
+    elem_matrix = np.array([[1,-1], [-1,1]]) / h
+    global_matrix = np.zeros((n,n))
+
+    for i in range(n-1):
+        global_matrix[i:i+2, i:i+2] += elem_matrix
+
+    return global_matrix
+
+n = 5
+h = 1.0  # Assuming uniform spacing
+
+fdm_matrix = fdm_1d_second_order(n, h)
+print("FDM Matrix:")
+print(fdm_matrix)
+
+fem_matrix = fem_1d_linear_stiffness(n, h)
+print("\nFEM Stiffness Matrix:")
+print(fem_matrix)
