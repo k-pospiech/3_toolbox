@@ -5,6 +5,7 @@ from scipy.linalg import logm, expm
 from numpy.linalg import matrix_rank
 from numpy.linalg import cond
 from scipy.sparse import csr_matrix
+import matplotlib.pyplot as plt
 
 # Matrix definition
 def create_matrix(rows, cols, symbolic=False, default_value=0):
@@ -627,13 +628,32 @@ def fem_1d_linear_stiffness(n, h=1.0):
 
     return global_matrix
 
-n = 5
-h = 1.0  # Assuming uniform spacing
+# Matrix visualization
+def plot_heatmap(matrix, title="Heatmap"):
+    """Plot a heatmap for a matrix.
 
-fdm_matrix = fdm_1d_second_order(n, h)
-print("FDM Matrix:")
-print(fdm_matrix)
+    Args:
+    - matrix (numpy.ndarray): Matrix to visualize
+    - title (str): Title for the plot    
+    """
+    plt.figure(figsize=(8,6))
+    plt.imshow(matrix, cmap='viridis')
+    plt.colorbar(label='Value')
+    plt.title(title)
+    plt.xlabel('Columns')
+    plt.ylabel('Rows')
+    plt.show()
 
-fem_matrix = fem_1d_linear_stiffness(n, h)
-print("\nFEM Stiffness Matrix:")
-print(fem_matrix)
+def plot_spy(matrix, title="Spy Plot"):
+    """Plot a spy plot for a matrix.
+    
+    Args:
+    - matrix (numpy.ndarray): Matrix to visualize
+    - title (str): Title for the plot    
+    """
+    plt.figure(figsize=(8, 6))
+    plt.spy(matrix)
+    plt.title(title)
+    plt.xlabel('Columns')
+    plt.ylabel('Rows')
+    plt.show()
